@@ -2,45 +2,23 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone Repo') {
+        stage('Clone') {
             steps {
-                echo 'Cloning the repo...'
-                // Jenkins does this by default if it's connected to GitHub
+                git 'https://github.com/shubham982194/devops-node-app.git'
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                echo 'Installing npm packages...'
                 sh 'npm install'
             }
         }
 
-        stage('Run Tests') {
+        stage('Run App') {
             steps {
-                echo 'Running tests (if any)...'
-                sh 'npm test || echo "No tests defined"'
+                sh 'node app.js &'
+                echo 'App started'
             }
-        }
-
-        stage('Build Docker Image') {
-            steps {
-                echo 'Building Docker image...'
-                sh 'docker build -t devops-node-app .'
-            }
-        }
-
-        stage('Run Docker Container') {
-            steps {
-                echo 'Running Docker container...'
-                sh 'docker run -d -p 3000:3000 devops-node-app'
-            }
-        }
-    }
-
-    post {
-        always {
-            echo 'Build pipeline finished 🚀'
         }
     }
 }
