@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'node:18'
-            args '-v /root/.npm:/root/.npm' // optional: cache npm between builds
+            args '-v /root/.npm:/root/.npm'
         }
     }
     stages {
@@ -12,21 +12,9 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Run App (optional)') {
             steps {
-                sh 'npm run build' // if you have a build script
-            }
-        }
-
-        stage('Test') {
-            steps {
-                sh 'npm test' // optional if tests are defined
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                echo 'Add deployment steps here'
+                sh 'node app.js' // only if you want to run it in Jenkins
             }
         }
     }
