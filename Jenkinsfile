@@ -8,13 +8,8 @@ pipeline {
     stages {
         stage('Install Dependencies') {
             steps {
+                sh 'node -v && npm -v'
                 sh 'npm install'
-            }
-        }
-
-        stage('Run App (optional)') {
-            steps {
-                sh 'node app.js' // only if you want to run it in Jenkins
             }
         }
     }
