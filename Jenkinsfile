@@ -1,23 +1,32 @@
 pipeline {
-    agent any
-
-    stages {
-        stage('Clone') {
-            steps {
-                git 'https://github.com/shubham982194/devops-node-app.git'
-            }
+    agent {
+        docker {
+            image 'node:18'
+            args '-v /root/.npm:/root/.npm' // optional: cache npm between builds
         }
-
+    }
+    stages {
         stage('Install Dependencies') {
             steps {
                 sh 'npm install'
             }
         }
 
-        stage('Run App') {
+        stage('Build') {
             steps {
-                sh 'node app.js &'
-                echo 'App started'
+                sh 'npm run build' // if you have a build script
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'npm test' // optional if tests are defined
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Add deployment steps here'
             }
         }
     }
